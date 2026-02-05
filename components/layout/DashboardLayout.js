@@ -74,7 +74,7 @@ export default function DashboardLayout({ children, title = "Dashboard", onRefre
   ].some(path => pathname === path)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50">
+    <div className="min-h-screen bg-background">
       <div className="flex">
         {/* Desktop Sidebar - Hidden on Mobile */}
         <div className="hidden lg:block">
@@ -94,7 +94,7 @@ export default function DashboardLayout({ children, title = "Dashboard", onRefre
         {/* Main Content */}
         <div className="flex-1 min-w-0">
           {/* Fixed Header with Consistent Height */}
-          <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-xl border-b border-slate-200/60 shadow-sm">
+          <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-xl border-b border-border shadow-sm">
             <div className="h-16 px-3 sm:px-4 lg:px-6">
               <div className="flex items-center justify-between h-full">
                 {/* Left Section: Logo (Mobile) or Title (Desktop) */}
@@ -111,11 +111,11 @@ export default function DashboardLayout({ children, title = "Dashboard", onRefre
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3 }}
-                      className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-800 truncate"
+                      className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground truncate"
                     >
                       {title}
                     </motion.h1>
-                    <p className="text-xs sm:text-sm text-slate-500 hidden sm:block truncate">
+                    <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block truncate">
                       {new Date().toLocaleDateString('en-US', {
                         weekday: 'long',
                         month: 'long',

@@ -223,19 +223,18 @@ function DashboardContent() {
         {/* Compact Header Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-200">
           <div>
-            <h1 className="text-lg font-semibold text-slate-800">
+            <h1 className="text-lg font-semibold text-foreground">
               {greetingData.greeting}, {session?.user?.name?.split(' ')[0] || 'Friend'}
             </h1>
-            <p className="text-sm text-slate-500">{greetingData.date}</p>
+            <p className="text-sm text-muted-foreground">{greetingData.date}</p>
           </div>
 
           {/* Quick Stats Pills */}
           <div className="flex items-center gap-2 flex-wrap">
-            <div className={`px-3 py-1.5 rounded-full text-sm font-medium ${
-              financialHealthScore >= 75 ? 'bg-emerald-100 text-emerald-700' :
+            <div className={`px-3 py-1.5 rounded-full text-sm font-medium ${financialHealthScore >= 75 ? 'bg-emerald-100 text-emerald-700' :
               financialHealthScore >= 50 ? 'bg-blue-100 text-blue-700' :
-              'bg-amber-100 text-amber-700'
-            }`}>
+                'bg-amber-100 text-amber-700'
+              }`}>
               <span className="hidden sm:inline">Health: </span>{financialHealthScore}/100
             </div>
             {monthlyData.totalIncome > 0 && (
@@ -290,18 +289,18 @@ function DashboardContent() {
           {/* Quick Add Expense */}
           <button
             onClick={() => setShowExpenseEntry(true)}
-            className="bg-white border-2 border-dashed border-slate-200 hover:border-emerald-400 hover:bg-emerald-50 rounded-xl p-4 transition-all group text-left"
+            className="bg-card border-2 border-dashed border-border hover:border-primary/50 hover:bg-primary/5 rounded-xl p-4 transition-all group text-left"
           >
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-lg bg-emerald-100 group-hover:bg-emerald-200 flex items-center justify-center transition-colors">
-                <Mic className="w-5 h-5 text-emerald-600" />
+              <div className="w-10 h-10 rounded-lg bg-primary/10 group-hover:bg-primary/20 flex items-center justify-center transition-colors">
+                <Mic className="w-5 h-5 text-primary" />
               </div>
               <div>
-                <div className="font-semibold text-slate-800">Quick Add</div>
-                <div className="text-xs text-slate-500">Voice or manual</div>
+                <div className="font-semibold text-foreground">Quick Add</div>
+                <div className="text-xs text-muted-foreground">Voice or manual</div>
               </div>
             </div>
-            <div className="text-xs text-slate-400 group-hover:text-emerald-600 transition-colors">
+            <div className="text-xs text-muted-foreground group-hover:text-primary transition-colors">
               + Add expense
             </div>
           </button>
@@ -309,39 +308,39 @@ function DashboardContent() {
           {/* Budget Status */}
           <button
             onClick={handleViewBudget}
-            className="bg-white border border-slate-200 hover:border-violet-400 hover:shadow-sm rounded-xl p-4 transition-all text-left"
+            className="bg-card border border-border hover:border-violet-500/50 hover:shadow-sm hover:shadow-violet-500/10 rounded-xl p-4 transition-all text-left"
           >
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-lg bg-violet-100 flex items-center justify-center">
-                <BarChart3 className="w-5 h-5 text-violet-600" />
+              <div className="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center">
+                <BarChart3 className="w-5 h-5 text-violet-400" />
               </div>
               <div>
-                <div className="font-semibold text-slate-800">Budget</div>
-                <div className="text-xs text-slate-500">
+                <div className="font-semibold text-foreground">Budget</div>
+                <div className="text-xs text-muted-foreground">
                   {budget ? `${Math.round((monthlyData.totalExpenses / budget.totalBudget) * 100)}% used` : 'Not set'}
                 </div>
               </div>
             </div>
-            <div className="text-xs text-violet-600 font-medium">View details →</div>
+            <div className="text-xs text-violet-400 font-medium">View details →</div>
           </button>
 
           {/* Goals Status */}
           <button
             onClick={handleViewGoals}
-            className="bg-white border border-slate-200 hover:border-purple-400 hover:shadow-sm rounded-xl p-4 transition-all text-left"
+            className="bg-card border border-border hover:border-purple-500/50 hover:shadow-sm hover:shadow-purple-500/10 rounded-xl p-4 transition-all text-left"
           >
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
-                <Target className="w-5 h-5 text-purple-600" />
+              <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center">
+                <Target className="w-5 h-5 text-purple-400" />
               </div>
               <div>
-                <div className="font-semibold text-slate-800">Goals</div>
-                <div className="text-xs text-slate-500">
+                <div className="font-semibold text-foreground">Goals</div>
+                <div className="text-xs text-muted-foreground">
                   {goals.length > 0 ? `${goals.filter(g => g.status === 'completed').length}/${goals.length} complete` : 'None set'}
                 </div>
               </div>
             </div>
-            <div className="text-xs text-purple-600 font-medium">Track progress →</div>
+            <div className="text-xs text-purple-400 font-medium">Track progress →</div>
           </button>
         </div>
 
@@ -353,16 +352,16 @@ function DashboardContent() {
           />
 
           {/* Recent Activity Card - Expanded */}
-          <Card className="border-slate-200">
+          <Card className="border-border bg-card">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                  <CreditCard className="w-4 h-4 text-slate-500" />
+                <CardTitle className="text-sm font-semibold flex items-center gap-2 text-foreground">
+                  <CreditCard className="w-4 h-4 text-muted-foreground" />
                   Recent Activity
                 </CardTitle>
                 <button
                   onClick={() => router.push('/dashboard/expenses')}
-                  className="text-xs text-emerald-600 font-medium hover:underline"
+                  className="text-xs text-primary font-medium hover:underline"
                 >
                   View all →
                 </button>
@@ -372,26 +371,26 @@ function DashboardContent() {
               {expenses.length > 0 ? (
                 <div className="space-y-2">
                   {expenses.slice(0, 5).map((expense) => (
-                    <div key={expense.id} className="flex items-center justify-between py-2 border-b border-slate-100 last:border-0">
+                    <div key={expense.id} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-base">
+                        <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-base">
                           {expense.category === 'Food & Dining' ? '🍕' :
                             expense.category === 'Transportation' ? '🚗' :
-                            expense.category === 'Shopping' ? '🛒' :
-                            expense.category === 'Healthcare' ? '🏥' :
-                            expense.category === 'Entertainment' ? '🎬' :
-                            expense.category === 'Home & Utilities' ? '🏠' : '💰'}
+                              expense.category === 'Shopping' ? '🛒' :
+                                expense.category === 'Healthcare' ? '🏥' :
+                                  expense.category === 'Entertainment' ? '🎬' :
+                                    expense.category === 'Home & Utilities' ? '🏠' : '💰'}
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-slate-800 truncate max-w-[180px]">
+                          <p className="text-sm font-medium text-foreground truncate max-w-[180px]">
                             {expense.description || expense.merchant || expense.category}
                           </p>
-                          <p className="text-xs text-slate-500">
+                          <p className="text-xs text-muted-foreground">
                             {new Date(expense.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
                           </p>
                         </div>
                       </div>
-                      <span className="text-sm font-semibold text-red-600">
+                      <span className="text-sm font-semibold text-red-400">
                         -₹{expense.amount.toLocaleString('en-IN')}
                       </span>
                     </div>
@@ -399,12 +398,12 @@ function DashboardContent() {
                 </div>
               ) : (
                 <div className="text-center py-6">
-                  <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-3">
-                    <CreditCard className="w-6 h-6 text-slate-400" />
+                  <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mx-auto mb-3">
+                    <CreditCard className="w-6 h-6 text-muted-foreground" />
                   </div>
-                  <p className="text-sm text-slate-600 mb-1">No transactions yet</p>
-                  <p className="text-xs text-slate-500 mb-3">Start tracking your expenses</p>
-                  <Button onClick={() => setShowExpenseEntry(true)} size="sm" className="bg-emerald-600 hover:bg-emerald-700">
+                  <p className="text-sm text-foreground mb-1">No transactions yet</p>
+                  <p className="text-xs text-muted-foreground mb-3">Start tracking your expenses</p>
+                  <Button onClick={() => setShowExpenseEntry(true)} size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground">
                     Add First Expense
                   </Button>
                 </div>
@@ -418,12 +417,12 @@ function DashboardContent() {
 
         {/* Main Dashboard Tabs */}
         <Tabs defaultValue="overview" className="space-y-4">
-          <TabsList className="bg-slate-100 p-1 rounded-lg">
-            <TabsTrigger value="overview" className="flex items-center gap-2 rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm">
+          <TabsList className="bg-muted p-1 rounded-lg">
+            <TabsTrigger value="overview" className="flex items-center gap-2 rounded-md data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm">
               <BarChart3 className="h-4 w-4" />
               <span>Overview</span>
             </TabsTrigger>
-            <TabsTrigger value="ai-agents" className="flex items-center gap-2 rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm">
+            <TabsTrigger value="ai-agents" className="flex items-center gap-2 rounded-md data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:shadow-sm">
               <Sparkles className="h-4 w-4" />
               <span>AI Agents</span>
               <span className="px-1.5 py-0.5 text-[10px] font-semibold bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded">
@@ -440,16 +439,16 @@ function DashboardContent() {
               <FinancialInsightsWidget compact={true} />
 
               {/* Budget Spending Overview */}
-              <Card className="border-slate-200">
+              <Card className="border-border bg-card">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-semibold flex items-center justify-between">
+                  <CardTitle className="text-sm font-semibold flex items-center justify-between text-foreground">
                     <span className="flex items-center gap-2">
-                      <BarChart3 className="w-4 h-4 text-blue-600" />
+                      <BarChart3 className="w-4 h-4 text-blue-400" />
                       Budget Overview
                     </span>
                     <button
                       onClick={handleViewBudget}
-                      className="text-xs text-emerald-600 hover:underline font-medium"
+                      className="text-xs text-primary hover:underline font-medium"
                     >
                       View all →
                     </button>
@@ -470,18 +469,17 @@ function DashboardContent() {
                           return (
                             <div key={key}>
                               <div className="flex items-center justify-between mb-1">
-                                <span className="text-xs font-medium text-slate-700">{category.englishName}</span>
-                                <span className="text-xs text-slate-500">
+                                <span className="text-xs font-medium text-foreground">{category.englishName}</span>
+                                <span className="text-xs text-muted-foreground">
                                   ₹{actualSpent.toLocaleString('en-IN')} / ₹{budgetAmount.toLocaleString('en-IN')}
                                 </span>
                               </div>
-                              <div className="w-full bg-slate-100 rounded-full h-1.5">
+                              <div className="w-full bg-muted rounded-full h-1.5">
                                 <div
-                                  className={`h-1.5 rounded-full transition-all ${
-                                    spentPercentage > 90 ? 'bg-red-500' :
+                                  className={`h-1.5 rounded-full transition-all ${spentPercentage > 90 ? 'bg-red-500' :
                                     spentPercentage > 70 ? 'bg-amber-500' :
-                                    'bg-emerald-500'
-                                  }`}
+                                      'bg-primary'
+                                    }`}
                                   style={{ width: `${Math.min(spentPercentage, 100)}%` }}
                                 />
                               </div>
@@ -491,9 +489,9 @@ function DashboardContent() {
                     </div>
                   ) : (
                     <div className="text-center py-6">
-                      <BarChart3 className="h-8 w-8 text-slate-300 mx-auto mb-2" />
-                      <p className="text-sm text-slate-500 mb-2">No budget data</p>
-                      <Button onClick={handleViewBudget} size="sm" variant="outline">
+                      <BarChart3 className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                      <p className="text-sm text-muted-foreground mb-2">No budget data</p>
+                      <Button onClick={handleViewBudget} size="sm" variant="outline" className="border-border text-foreground hover:bg-muted">
                         Create Budget
                       </Button>
                     </div>
@@ -512,16 +510,16 @@ function DashboardContent() {
             </div>
 
             {/* Goals Section */}
-            <Card className="border-slate-200">
+            <Card className="border-border bg-card">
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-semibold flex items-center justify-between">
+                <CardTitle className="text-sm font-semibold flex items-center justify-between text-foreground">
                   <span className="flex items-center gap-2">
-                    <Target className="w-4 h-4 text-purple-600" />
+                    <Target className="w-4 h-4 text-purple-400" />
                     Savings Goals
                   </span>
                   <button
                     onClick={handleViewGoals}
-                    className="text-xs text-emerald-600 hover:underline font-medium"
+                    className="text-xs text-primary hover:underline font-medium"
                   >
                     Manage goals →
                   </button>
@@ -537,27 +535,25 @@ function DashboardContent() {
                       return (
                         <div
                           key={goal.id}
-                          className={`p-3 rounded-lg border ${
-                            isCompleted ? 'bg-emerald-50 border-emerald-200' :
-                            progress > 50 ? 'bg-blue-50 border-blue-200' :
-                            'bg-slate-50 border-slate-200'
-                          }`}
+                          className={`p-3 rounded-lg border ${isCompleted ? 'bg-emerald-950/30 border-emerald-800' :
+                            progress > 50 ? 'bg-blue-950/30 border-blue-800' :
+                              'bg-card border-border'
+                            }`}
                         >
                           <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm font-medium text-slate-800 truncate">{goal.name}</span>
-                            {isCompleted && <span className="text-emerald-500">✓</span>}
+                            <span className="text-sm font-medium text-foreground truncate">{goal.name}</span>
+                            {isCompleted && <span className="text-emerald-400">✓</span>}
                           </div>
-                          <div className="w-full bg-white rounded-full h-1.5 mb-1">
+                          <div className="w-full bg-muted rounded-full h-1.5 mb-1">
                             <div
-                              className={`h-1.5 rounded-full ${
-                                isCompleted ? 'bg-emerald-500' :
+                              className={`h-1.5 rounded-full ${isCompleted ? 'bg-emerald-500' :
                                 progress > 50 ? 'bg-blue-500' :
-                                'bg-slate-400'
-                              }`}
+                                  'bg-slate-600'
+                                }`}
                               style={{ width: `${Math.min(progress, 100)}%` }}
                             />
                           </div>
-                          <div className="flex justify-between text-xs text-slate-500">
+                          <div className="flex justify-between text-xs text-muted-foreground">
                             <span>₹{(goal.currentAmount / 1000).toFixed(0)}k</span>
                             <span>{progress.toFixed(0)}%</span>
                           </div>
@@ -567,9 +563,9 @@ function DashboardContent() {
                   </div>
                 ) : (
                   <div className="text-center py-6">
-                    <Target className="h-8 w-8 text-slate-300 mx-auto mb-2" />
-                    <p className="text-sm text-slate-500 mb-2">No goals set yet</p>
-                    <Button onClick={handleViewGoals} size="sm" className="bg-purple-600 hover:bg-purple-700">
+                    <Target className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                    <p className="text-sm text-muted-foreground mb-2">No goals set yet</p>
+                    <Button onClick={handleViewGoals} size="sm" className="bg-purple-600 hover:bg-purple-700 text-white">
                       Create First Goal
                     </Button>
                   </div>
@@ -578,70 +574,70 @@ function DashboardContent() {
             </Card>
 
             {/* Quick Actions - Compact Grid */}
-            <Card className="border-slate-200">
+            <Card className="border-border bg-card">
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-semibold">Quick Actions</CardTitle>
+                <CardTitle className="text-sm font-semibold text-foreground">Quick Actions</CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
                   <button
                     onClick={handleAddExpense}
-                    className="flex flex-col items-center p-3 rounded-lg hover:bg-slate-50 transition-colors group"
+                    className="flex flex-col items-center p-3 rounded-lg hover:bg-muted transition-colors group"
                   >
-                    <div className="w-10 h-10 rounded-lg bg-emerald-100 group-hover:bg-emerald-200 flex items-center justify-center mb-1 transition-colors">
-                      <Plus className="w-5 h-5 text-emerald-600" />
+                    <div className="w-10 h-10 rounded-lg bg-emerald-500/10 group-hover:bg-emerald-500/20 flex items-center justify-center mb-1 transition-colors">
+                      <Plus className="w-5 h-5 text-emerald-400" />
                     </div>
-                    <span className="text-xs text-slate-600">Add</span>
+                    <span className="text-xs text-muted-foreground group-hover:text-foreground">Add</span>
                   </button>
 
                   <button
                     onClick={() => router.push('/dashboard/debt')}
-                    className="flex flex-col items-center p-3 rounded-lg hover:bg-slate-50 transition-colors group"
+                    className="flex flex-col items-center p-3 rounded-lg hover:bg-muted transition-colors group"
                   >
-                    <div className="w-10 h-10 rounded-lg bg-red-100 group-hover:bg-red-200 flex items-center justify-center mb-1 transition-colors">
-                      <CreditCard className="w-5 h-5 text-red-600" />
+                    <div className="w-10 h-10 rounded-lg bg-red-500/10 group-hover:bg-red-500/20 flex items-center justify-center mb-1 transition-colors">
+                      <CreditCard className="w-5 h-5 text-red-400" />
                     </div>
-                    <span className="text-xs text-slate-600">Debt</span>
+                    <span className="text-xs text-muted-foreground group-hover:text-foreground">Debt</span>
                   </button>
 
                   <button
                     onClick={() => router.push('/dashboard/debt-calculator')}
-                    className="flex flex-col items-center p-3 rounded-lg hover:bg-slate-50 transition-colors group"
+                    className="flex flex-col items-center p-3 rounded-lg hover:bg-muted transition-colors group"
                   >
-                    <div className="w-10 h-10 rounded-lg bg-amber-100 group-hover:bg-amber-200 flex items-center justify-center mb-1 transition-colors">
-                      <Calculator className="w-5 h-5 text-amber-600" />
+                    <div className="w-10 h-10 rounded-lg bg-amber-500/10 group-hover:bg-amber-500/20 flex items-center justify-center mb-1 transition-colors">
+                      <Calculator className="w-5 h-5 text-amber-400" />
                     </div>
-                    <span className="text-xs text-slate-600">Calculator</span>
+                    <span className="text-xs text-muted-foreground group-hover:text-foreground">Calculator</span>
                   </button>
 
                   <button
                     onClick={() => router.push('/dashboard/profile')}
-                    className="flex flex-col items-center p-3 rounded-lg hover:bg-slate-50 transition-colors group"
+                    className="flex flex-col items-center p-3 rounded-lg hover:bg-muted transition-colors group"
                   >
-                    <div className="w-10 h-10 rounded-lg bg-indigo-100 group-hover:bg-indigo-200 flex items-center justify-center mb-1 transition-colors">
-                      <User className="w-5 h-5 text-indigo-600" />
+                    <div className="w-10 h-10 rounded-lg bg-indigo-500/10 group-hover:bg-indigo-500/20 flex items-center justify-center mb-1 transition-colors">
+                      <User className="w-5 h-5 text-indigo-400" />
                     </div>
-                    <span className="text-xs text-slate-600">Profile</span>
+                    <span className="text-xs text-muted-foreground group-hover:text-foreground">Profile</span>
                   </button>
 
                   <button
                     onClick={() => router.push('/dashboard/settings')}
-                    className="flex flex-col items-center p-3 rounded-lg hover:bg-slate-50 transition-colors group"
+                    className="flex flex-col items-center p-3 rounded-lg hover:bg-muted transition-colors group"
                   >
-                    <div className="w-10 h-10 rounded-lg bg-slate-100 group-hover:bg-slate-200 flex items-center justify-center mb-1 transition-colors">
-                      <Settings className="w-5 h-5 text-slate-600" />
+                    <div className="w-10 h-10 rounded-lg bg-slate-500/10 group-hover:bg-slate-500/20 flex items-center justify-center mb-1 transition-colors">
+                      <Settings className="w-5 h-5 text-slate-400" />
                     </div>
-                    <span className="text-xs text-slate-600">Settings</span>
+                    <span className="text-xs text-muted-foreground group-hover:text-foreground">Settings</span>
                   </button>
 
                   <button
                     onClick={() => router.push('/dashboard/help')}
-                    className="flex flex-col items-center p-3 rounded-lg hover:bg-slate-50 transition-colors group"
+                    className="flex flex-col items-center p-3 rounded-lg hover:bg-muted transition-colors group"
                   >
-                    <div className="w-10 h-10 rounded-lg bg-green-100 group-hover:bg-green-200 flex items-center justify-center mb-1 transition-colors">
-                      <HelpCircle className="w-5 h-5 text-green-600" />
+                    <div className="w-10 h-10 rounded-lg bg-green-500/10 group-hover:bg-green-500/20 flex items-center justify-center mb-1 transition-colors">
+                      <HelpCircle className="w-5 h-5 text-green-400" />
                     </div>
-                    <span className="text-xs text-slate-600">Help</span>
+                    <span className="text-xs text-muted-foreground group-hover:text-foreground">Help</span>
                   </button>
                 </div>
               </CardContent>

@@ -100,6 +100,28 @@ CREATE TABLE IF NOT EXISTS transactions (
 );
 
 -- ============================================
+-- Notifications table
+-- ============================================
+CREATE TABLE IF NOT EXISTS notifications (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  type TEXT NOT NULL,
+  priority TEXT NOT NULL,
+  category TEXT NOT NULL,
+  title TEXT NOT NULL,
+  message TEXT NOT NULL,
+  action_label TEXT,
+  action_url TEXT,
+  metadata JSONB DEFAULT '{}',
+  read BOOLEAN DEFAULT false,
+  read_at TIMESTAMPTZ,
+  dismissed BOOLEAN DEFAULT false,
+  dismissed_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ============================================
 -- NextAuth required tables
 -- ============================================
 CREATE TABLE IF NOT EXISTS accounts (
@@ -162,6 +184,8 @@ CREATE INDEX IF NOT EXISTS idx_debts_due_date ON debts(due_date);
 CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id);
 CREATE INDEX IF NOT EXISTS idx_transactions_date ON transactions(date);
 CREATE INDEX IF NOT EXISTS idx_transactions_category ON transactions(category);
+CREATE INDEX IF NOT EXISTS idx_notifications_user_id ON notifications(user_id);
+CREATE INDEX IF NOT EXISTS idx_notifications_read ON notifications(read);
 CREATE INDEX IF NOT EXISTS idx_accounts_user_id ON accounts(user_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_token ON sessions(session_token);
@@ -173,6 +197,7 @@ ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE debts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE transactions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
 ALTER TABLE accounts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE sessions ENABLE ROW LEVEL SECURITY;
 
@@ -201,6 +226,12 @@ CREATE POLICY "Service role full access debts" ON debts
 CREATE POLICY "Users can manage own transactions" ON transactions
   FOR ALL USING (auth.uid()::text = user_id::text);
 CREATE POLICY "Service role full access transactions" ON transactions
+  FOR ALL USING (true);
+
+-- Notifications policies
+CREATE POLICY "Users can manage own notifications" ON notifications
+  FOR ALL USING (auth.uid()::text = user_id::text);
+CREATE POLICY "Service role full access notifications" ON notifications
   FOR ALL USING (true);
 
 -- Accounts policies (NextAuth managed)
@@ -233,4 +264,7 @@ CREATE TRIGGER update_debts_updated_at BEFORE UPDATE ON debts
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
   
 CREATE TRIGGER update_transactions_updated_at BEFORE UPDATE ON transactions
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_notifications_updated_at BEFORE UPDATE ON notifications
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

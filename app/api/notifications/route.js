@@ -25,42 +25,58 @@ export async function GET(request) {
         const category = searchParams.get('category')
         const priority = searchParams.get('priority')
 
-        const db = await connectToDatabase()
+        const supabase = await connectToDatabase()
 
         // Build query
-        const query = {
-            userId: session.user.id
-        }
+        let query = supabase
+            .from('notifications')
+            .select('*')
+            .eq('user_id', session.user.id)
+            .order('created_at', { ascending: false })
+            .limit(limit)
 
         if (!includeRead) {
-            query.read = false
+            query = query.eq('read', false)
         }
 
         if (!includeDismissed) {
-            query.dismissed = { $ne: true }
+            query = query.eq('dismissed', false)
         }
 
         if (category) {
-            query.category = category
+            query = query.eq('category', category)
         }
 
         if (priority) {
-            query.priority = priority
+            query = query.eq('priority', priority)
         }
 
-        // Fetch notifications
-        const notifications = await db
-            .collection('notifications')
-            .find(query)
-            .sort({ timestamp: -1 })
-            .limit(limit)
-            .toArray()
+        const { data: notifications, error } = await query
 
-        // Format notifications
+        if (error) {
+            // Check if error is due to missing table (404-like in Supabase context sometimes, provides specific message)
+            console.error('Supabase fetch error:', error)
+            throw new Error(error.message)
+        }
+
+        // Format notifications (snake_case DB -> camelCase app)
         const formattedNotifications = notifications.map(notif => ({
-            ...notif,
-            id: notif._id.toString(),
-            _id: undefined
+            id: notif.id,
+            userId: notif.user_id,
+            type: notif.type,
+            priority: notif.priority,
+            category: notif.category,
+            title: notif.title,
+            message: notif.message,
+            actionLabel: notif.action_label,
+            actionUrl: notif.action_url,
+            metadata: notif.metadata,
+            read: notif.read,
+            readAt: notif.read_at,
+            dismissed: notif.dismissed,
+            dismissedAt: notif.dismissed_at,
+            timestamp: notif.created_at,
+            createdAt: notif.created_at
         }))
 
         return NextResponse.json({
@@ -123,32 +139,52 @@ export async function POST(request) {
             )
         }
 
-        const db = await connectToDatabase()
+        const supabase = await connectToDatabase()
 
-        // Create notification
+        // Create notification object (camelCase input -> snake_case DB)
         const notification = {
-            userId: session.user.id,
+            user_id: session.user.id,
             type,
             priority,
             category,
             title,
             message,
-            actionLabel: actionLabel || null,
-            actionUrl: actionUrl || null,
+            action_label: actionLabel || null,
+            action_url: actionUrl || null,
             metadata: metadata || {},
             read: false,
             dismissed: false,
-            timestamp: new Date(),
-            createdAt: new Date()
+            created_at: new Date().toISOString()
         }
 
-        const result = await db.collection('notifications').insertOne(notification)
+        const { data: newNotification, error } = await supabase
+            .from('notifications')
+            .insert(notification)
+            .select()
+            .single()
 
+        if (error) {
+            console.error('Supabase insert error:', error)
+            throw new Error(error.message)
+        }
+
+        // Format response
         return NextResponse.json({
             success: true,
             notification: {
-                ...notification,
-                id: result.insertedId.toString()
+                id: newNotification.id,
+                userId: newNotification.user_id,
+                type: newNotification.type,
+                priority: newNotification.priority,
+                category: newNotification.category,
+                title: newNotification.title,
+                message: newNotification.message,
+                actionLabel: newNotification.action_label,
+                actionUrl: newNotification.action_url,
+                metadata: newNotification.metadata,
+                read: newNotification.read,
+                timestamp: newNotification.created_at,
+                createdAt: newNotification.created_at
             }
         })
 
@@ -185,21 +221,32 @@ export async function PATCH(request) {
             )
         }
 
-        const db = await connectToDatabase()
+        // Map updates to snake_case
+        const dbUpdates = {}
+        if (updates.read !== undefined) dbUpdates.read = updates.read
+        if (updates.readAt !== undefined) dbUpdates.read_at = updates.readAt
+        if (updates.dismissed !== undefined) dbUpdates.dismissed = updates.dismissed
+        if (updates.dismissedAt !== undefined) dbUpdates.dismissed_at = updates.dismissedAt
 
-        const result = await db.collection('notifications').updateMany(
-            { userId: session.user.id, dismissed: { $ne: true } },
-            {
-                $set: {
-                    ...updates,
-                    updatedAt: new Date()
-                }
-            }
-        )
+        dbUpdates.updated_at = new Date().toISOString()
+
+        const supabase = await connectToDatabase()
+
+        const { data, error } = await supabase
+            .from('notifications')
+            .update(dbUpdates)
+            .eq('user_id', session.user.id)
+            .eq('dismissed', false)
+            .select()
+
+        if (error) {
+            console.error('Supabase bulk update error:', error)
+            throw new Error(error.message)
+        }
 
         return NextResponse.json({
             success: true,
-            modifiedCount: result.modifiedCount
+            modifiedCount: data ? data.length : 0
         })
 
     } catch (error) {

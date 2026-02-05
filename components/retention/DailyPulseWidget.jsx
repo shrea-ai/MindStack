@@ -14,9 +14,9 @@ const MOOD_OPTIONS = [
     description: 'No spend',
     estimatedSpend: 0,
     color: 'emerald',
-    bgColor: 'bg-emerald-50',
-    borderColor: 'border-emerald-300',
-    textColor: 'text-emerald-700'
+    bgColor: 'bg-emerald-500/10',
+    borderColor: 'border-emerald-500/50',
+    textColor: 'text-emerald-500'
   },
   {
     id: 'good',
@@ -25,9 +25,9 @@ const MOOD_OPTIONS = [
     description: 'Light',
     estimatedSpend: 250,
     color: 'blue',
-    bgColor: 'bg-blue-50',
-    borderColor: 'border-blue-300',
-    textColor: 'text-blue-700'
+    bgColor: 'bg-blue-500/10',
+    borderColor: 'border-blue-500/50',
+    textColor: 'text-blue-500'
   },
   {
     id: 'okay',
@@ -36,9 +36,9 @@ const MOOD_OPTIONS = [
     description: 'Moderate',
     estimatedSpend: 1000,
     color: 'amber',
-    bgColor: 'bg-amber-50',
-    borderColor: 'border-amber-300',
-    textColor: 'text-amber-700'
+    bgColor: 'bg-amber-500/10',
+    borderColor: 'border-amber-500/50',
+    textColor: 'text-amber-500'
   },
   {
     id: 'tough',
@@ -47,9 +47,9 @@ const MOOD_OPTIONS = [
     description: 'Heavy',
     estimatedSpend: 3000,
     color: 'red',
-    bgColor: 'bg-red-50',
-    borderColor: 'border-red-300',
-    textColor: 'text-red-700'
+    bgColor: 'bg-red-500/10',
+    borderColor: 'border-red-500/50',
+    textColor: 'text-red-500'
   }
 ]
 
@@ -154,11 +154,11 @@ export default function DailyPulseWidget({ onQuickAdd, className = '' }) {
       <CardContent className="p-4">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2">
+          <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
             <Zap className="w-4 h-4 text-emerald-500" />
             Today&apos;s Pulse
           </h3>
-          <span className="text-xs text-slate-500 flex items-center gap-1">
+          <span className="text-xs text-muted-foreground flex items-center gap-1">
             {dateStr}
             <WeatherIcon className="w-4 h-4 text-amber-400" />
           </span>
@@ -179,22 +179,22 @@ export default function DailyPulseWidget({ onQuickAdd, className = '' }) {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: 'spring', stiffness: 500, delay: 0.1 }}
-                  className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center"
+                  className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center"
                 >
-                  <Check className="w-5 h-5 text-emerald-600" />
+                  <Check className="w-5 h-5 text-emerald-500" />
                 </motion.div>
                 <span className="text-2xl">
                   {MOOD_OPTIONS.find(m => m.id === selectedMood)?.emoji}
                 </span>
               </div>
-              <p className="text-sm text-slate-600 mb-3">{message || "You're all set for today!"}</p>
+              <p className="text-sm text-foreground mb-3">{message || "You're all set for today!"}</p>
 
               {/* Quick add button */}
               <Button
                 variant="outline"
                 size="sm"
                 onClick={onQuickAdd}
-                className="text-emerald-600 border-emerald-200 hover:bg-emerald-50"
+                className="text-emerald-500 border-emerald-500/30 hover:bg-emerald-500/10"
               >
                 <Plus className="w-4 h-4 mr-1" />
                 Add specific expense
@@ -208,7 +208,7 @@ export default function DailyPulseWidget({ onQuickAdd, className = '' }) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <p className="text-sm text-slate-600 text-center mb-4">
+              <p className="text-sm text-muted-foreground text-center mb-4">
                 How&apos;s your spending today?
               </p>
 
@@ -225,13 +225,13 @@ export default function DailyPulseWidget({ onQuickAdd, className = '' }) {
                       relative flex flex-col items-center p-3 rounded-xl border-2 transition-all
                       ${selectedMood === mood.id
                         ? `${mood.bgColor} ${mood.borderColor}`
-                        : 'bg-white border-slate-200 hover:border-slate-300'
+                        : 'bg-card border-border hover:border-input'
                       }
                       ${submitting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
                     `}
                   >
                     <span className="text-2xl mb-1">{mood.emoji}</span>
-                    <span className={`text-xs font-medium ${selectedMood === mood.id ? mood.textColor : 'text-slate-600'}`}>
+                    <span className={`text-xs font-medium ${selectedMood === mood.id ? mood.textColor : 'text-muted-foreground'}`}>
                       {mood.label}
                     </span>
                   </motion.button>
@@ -241,9 +241,9 @@ export default function DailyPulseWidget({ onQuickAdd, className = '' }) {
               {/* Divider with "or" */}
               <div className="relative flex items-center justify-center mb-4">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-slate-200" />
+                  <div className="w-full border-t border-border" />
                 </div>
-                <span className="relative bg-white px-3 text-xs text-slate-400">or</span>
+                <span className="relative bg-card px-3 text-xs text-muted-foreground">or</span>
               </div>
 
               {/* Quick add button */}
@@ -251,7 +251,7 @@ export default function DailyPulseWidget({ onQuickAdd, className = '' }) {
                 variant="outline"
                 size="sm"
                 onClick={onQuickAdd}
-                className="w-full text-slate-600 border-slate-200 hover:bg-slate-50"
+                className="w-full text-foreground border-border hover:bg-secondary"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Quick Add Expense
@@ -262,10 +262,10 @@ export default function DailyPulseWidget({ onQuickAdd, className = '' }) {
 
         {/* Week summary footer */}
         {weekSummary && (
-          <div className="mt-4 pt-3 border-t border-slate-100">
-            <div className="flex items-center justify-between text-xs text-slate-500">
+          <div className="mt-4 pt-3 border-t border-border">
+            <div className="flex items-center justify-between text-xs text-muted-foreground">
               <span>
-                This week: <span className="font-medium text-slate-700">₹{weekSummary.totalSpent?.toLocaleString('en-IN') || 0}</span> spent
+                This week: <span className="font-medium text-foreground">₹{weekSummary.totalSpent?.toLocaleString('en-IN') || 0}</span> spent
               </span>
               <span>
                 {weekSummary.daysTracked || 0} days tracked

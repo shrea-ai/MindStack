@@ -121,26 +121,26 @@ export default function Sidebar({ isOpen, onClose }) {
                   <Link key={item.name} href={item.href} onClick={onClose}>
                     <div
                       className={`group relative flex items-center px-3 py-3 rounded-lg transition-all duration-150 cursor-pointer ${isActive
-                          ? 'bg-emerald-50 text-emerald-700'
-                          : 'text-slate-600 hover:bg-slate-50'
+                        ? 'bg-cyan-50 dark:bg-cyan-900/10 text-cyan-700 dark:text-cyan-400'
+                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                         }`}
                     >
                       {/* Active indicator bar */}
                       {isActive && (
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-emerald-500 rounded-r-full" />
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-cyan-500 rounded-r-full" />
                       )}
 
                       <Icon className={`h-5 w-5 ${isActive
-                          ? 'text-emerald-600'
-                          : 'text-slate-400 group-hover:text-slate-600'
+                        ? 'text-cyan-600 dark:text-cyan-400'
+                        : 'text-slate-400 group-hover:text-slate-600 dark:text-slate-500 dark:group-hover:text-slate-300'
                         } transition-colors flex-shrink-0`} />
 
                       <div className="ml-3 flex-1 min-w-0">
-                        <p className={`text-sm font-medium ${isActive ? 'text-emerald-700' : 'text-slate-700 group-hover:text-slate-900'
+                        <p className={`text-sm font-medium ${isActive ? 'text-cyan-700 dark:text-cyan-400' : 'text-slate-700 dark:text-slate-200 group-hover:text-slate-900 dark:group-hover:text-white'
                           }`}>
                           {t(item.name)}
                         </p>
-                        <p className={`text-xs ${isActive ? 'text-emerald-600/70' : 'text-slate-400'
+                        <p className={`text-xs ${isActive ? 'text-cyan-600/70 dark:text-cyan-400/70' : 'text-slate-400 dark:text-slate-500'
                           }`}>
                           {t(item.description)}
                         </p>
@@ -172,7 +172,7 @@ export default function Sidebar({ isOpen, onClose }) {
       {/* Desktop Sidebar - Sticky and Enhanced */}
       <div className={`
         hidden lg:flex
-        bg-white dark:bg-gray-900 border-r border-slate-200 dark:border-gray-700
+        bg-sidebar border-r border-sidebar-border
         transition-all duration-300 ease-in-out
         ${isCollapsed ? 'w-20' : 'w-72'} 
         h-screen
@@ -180,17 +180,17 @@ export default function Sidebar({ isOpen, onClose }) {
       `}>
 
         {/* Header */}
-        <div className="p-4 border-b border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 h-16 flex items-center">
+        <div className="p-4 border-b border-sidebar-border bg-sidebar h-16 flex items-center">
           <div className="flex items-center justify-between w-full">
             {!isCollapsed && (
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center shadow-lg border-2 border-white">
+                <div className="w-10 h-10 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center shadow-lg border-2 border-white/10">
                   <TrendingUp className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex flex-col justify-center">
                   <h1 className="text-xl font-bold leading-tight">
-                    <span className="text-slate-800">Wealth</span>
-                    <span className="bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent">Wise</span>
+                    <span className="text-foreground">Wealth</span>
+                    <span className="text-cyan-400">Wise</span>
                   </h1>
                   <p className="text-xs text-slate-500 leading-tight">Smart Finance Platform</p>
                 </div>
@@ -199,7 +199,7 @@ export default function Sidebar({ isOpen, onClose }) {
 
             {/* Collapsed state - Show just the logo */}
             {isCollapsed && (
-              <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center shadow-lg border-2 border-white mx-auto">
+              <div className="w-10 h-10 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center shadow-lg border-2 border-white mx-auto">
                 <TrendingUp className="w-6 h-6 text-white" />
               </div>
             )}
@@ -229,27 +229,27 @@ export default function Sidebar({ isOpen, onClose }) {
               <Link key={item.name} href={item.href}>
                 <div
                   className={`group relative flex items-center px-3 py-2.5 rounded-lg transition-all duration-150 cursor-pointer ${isActive
-                      ? 'bg-emerald-50 text-emerald-700'
-                      : 'text-slate-600 hover:bg-slate-50'
+                    ? 'bg-cyan-50 dark:bg-cyan-900/10 text-cyan-700 dark:text-cyan-400'
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
                     }`}
                 >
                   {/* Active indicator bar */}
                   {isActive && (
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-emerald-500 rounded-r-full" />
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-cyan-500 rounded-r-full" />
                   )}
 
                   <Icon className={`h-5 w-5 ${isActive
-                      ? 'text-emerald-600'
-                      : 'text-slate-400 group-hover:text-slate-600'
+                    ? 'text-primary'
+                    : 'text-muted-foreground group-hover:text-foreground'
                     } transition-colors flex-shrink-0`} />
 
                   {!isCollapsed && (
                     <div className="ml-3 flex-1 min-w-0">
-                      <p className={`text-sm font-medium ${isActive ? 'text-emerald-700' : 'text-slate-700 group-hover:text-slate-900'
+                      <p className={`text-sm font-medium ${isActive ? 'text-primary' : 'text-foreground group-hover:text-foreground'
                         }`}>
                         {t(item.name)}
                       </p>
-                      <p className={`text-xs ${isActive ? 'text-emerald-600/70' : 'text-slate-400'
+                      <p className={`text-xs ${isActive ? 'text-primary/70' : 'text-muted-foreground'
                         }`}>
                         {t(item.description)}
                       </p>

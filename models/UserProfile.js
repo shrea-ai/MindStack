@@ -2,19 +2,19 @@ import mongoose from 'mongoose'
 
 const userProfileSchema = new mongoose.Schema({
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: 'User',
     required: true,
     unique: true  // This creates the index automatically, no need for separate schema.index()
   },
-  
+
   // Basic Demographics
   monthlyIncome: {
     type: Number,
     min: [1000, 'Monthly income must be at least ₹1,000']
     // Removed required: true to allow initial profile creation
   },
-  
+
   incomeSource: {
     type: String,
     enum: ['salary', 'business', 'freelance', 'other'],
@@ -69,21 +69,21 @@ const userProfileSchema = new mongoose.Schema({
     trim: true
     // Removed required: true to allow initial profile creation
   },
-  
+
   familySize: {
     type: Number,
     min: [1, 'Family size must be at least 1'],
     max: [20, 'Family size cannot exceed 20']
     // Removed required: true to allow initial profile creation
   },
-  
+
   age: {
     type: Number,
     min: [18, 'Age must be at least 18'],
     max: [100, 'Age cannot exceed 100']
     // Removed required: true to allow initial profile creation
   },
-  
+
   occupation: {
     type: String,
     trim: true,
@@ -167,7 +167,7 @@ const userProfileSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-  
+
   // Generated Budget
   generatedBudget: {
     type: mongoose.Schema.Types.Mixed,
@@ -186,7 +186,7 @@ const userProfileSchema = new mongoose.Schema({
   lastBudgetGenerated: {
     type: Date
   },
-  
+
   // Budget Preferences
   budgetPreferences: {
     language: {
@@ -249,7 +249,7 @@ const userProfileSchema = new mongoose.Schema({
       default: true
     }
   },
-  
+
   // Expenses Data
   expenses: {
     type: mongoose.Schema.Types.Mixed,
@@ -490,19 +490,19 @@ const userProfileSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  
+
   onboardingStep: {
     type: String,
     enum: ['income', 'demographics', 'financial_pulse', 'budget_generation', 'review', 'completed'],
     default: 'income'
   },
-  
+
   // Metadata
   createdAt: {
     type: Date,
     default: Date.now
   },
-  
+
   updatedAt: {
     type: Date,
     default: Date.now
@@ -528,13 +528,13 @@ userProfileSchema.index({ 'budgetPreferences.language': 1, onboardingCompleted: 
 userProfileSchema.index({ age: 1, incomeSource: 1 })
 
 // Pre-save middleware to update timestamps
-userProfileSchema.pre('save', function(next) {
+userProfileSchema.pre('save', function (next) {
   this.updatedAt = new Date()
   next()
 })
 
 // Virtual for formatted income with localization support
-userProfileSchema.virtual('formattedIncome').get(function() {
+userProfileSchema.virtual('formattedIncome').get(function () {
   const currency = this.budgetPreferences?.currency || 'INR'
   const language = this.budgetPreferences?.language || 'hinglish'
 
@@ -567,7 +567,7 @@ function normalizeToMonthly(amount, frequency) {
 }
 
 // Virtual: Total monthly income from all sources
-userProfileSchema.virtual('totalMonthlyIncome').get(function() {
+userProfileSchema.virtual('totalMonthlyIncome').get(function () {
   if (!this.incomeSources || this.incomeSources.length === 0) {
     return this.monthlyIncome || 0
   }
@@ -580,7 +580,7 @@ userProfileSchema.virtual('totalMonthlyIncome').get(function() {
 })
 
 // Virtual: Stable monthly income only (for conservative budgeting)
-userProfileSchema.virtual('stableMonthlyIncome').get(function() {
+userProfileSchema.virtual('stableMonthlyIncome').get(function () {
   if (!this.incomeSources || this.incomeSources.length === 0) {
     return this.monthlyIncome || 0
   }
@@ -593,14 +593,14 @@ userProfileSchema.virtual('stableMonthlyIncome').get(function() {
 })
 
 // Virtual: Income stability ratio (stable/total)
-userProfileSchema.virtual('incomeStabilityRatio').get(function() {
+userProfileSchema.virtual('incomeStabilityRatio').get(function () {
   const total = this.totalMonthlyIncome
   if (total === 0) return 1
   return this.stableMonthlyIncome / total
 })
 
 // Virtual: Primary income source (highest amount)
-userProfileSchema.virtual('primaryIncomeSource').get(function() {
+userProfileSchema.virtual('primaryIncomeSource').get(function () {
   if (!this.incomeSources || this.incomeSources.length === 0) {
     return { type: this.incomeSource || 'salary', amount: this.monthlyIncome || 0 }
   }
@@ -614,31 +614,31 @@ userProfileSchema.virtual('primaryIncomeSource').get(function() {
 })
 
 // Method to check if budget needs regeneration (if profile updated)
-userProfileSchema.methods.needsBudgetRegeneration = function() {
+userProfileSchema.methods.needsBudgetRegeneration = function () {
   if (!this.generatedBudget || !this.generatedBudget.generatedAt) {
     return true
   }
-  
+
   // Regenerate if profile updated after budget generation
   return this.updatedAt > this.generatedBudget.generatedAt
 }
 
 // Method to check if required onboarding fields are complete
-userProfileSchema.methods.isOnboardingComplete = function() {
+userProfileSchema.methods.isOnboardingComplete = function () {
   return !!(this.monthlyIncome && this.city && this.familySize && this.age)
 }
 
 // Method to get onboarding completion percentage
-userProfileSchema.methods.getOnboardingProgress = function() {
+userProfileSchema.methods.getOnboardingProgress = function () {
   const requiredFields = ['monthlyIncome', 'city', 'familySize', 'age']
   const completedFields = requiredFields.filter(field => this[field])
   return Math.round((completedFields.length / requiredFields.length) * 100)
 }
 
 // Enhanced method to get user's preferred language content
-userProfileSchema.methods.getLocalizedContent = function(content) {
+userProfileSchema.methods.getLocalizedContent = function (content) {
   const language = this.budgetPreferences?.language || 'hinglish'
-  
+
   // Support both old and new language codes
   const languageMap = {
     'hindi': 'hi',
@@ -647,24 +647,24 @@ userProfileSchema.methods.getLocalizedContent = function(content) {
     'hi': 'hi',
     'en': 'en'
   }
-  
+
   const mappedLanguage = languageMap[language] || 'en'
-  
+
   return content[mappedLanguage] || content[language] || content.english || content.en || content
 }
 
 // Method to format currency with user preferences
-userProfileSchema.methods.formatCurrency = function(amount) {
+userProfileSchema.methods.formatCurrency = function (amount) {
   const currency = this.budgetPreferences?.currency || 'INR'
   const language = this.budgetPreferences?.language || 'hinglish'
-  
+
   let locale = 'en-IN'
   if (language === 'hindi' || language === 'hi') {
     locale = 'hi-IN'
   } else if (language === 'english' || language === 'en') {
     locale = 'en-US'
   }
-  
+
   return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: currency,
@@ -673,34 +673,34 @@ userProfileSchema.methods.formatCurrency = function(amount) {
 }
 
 // Method to format numbers with user preferences
-userProfileSchema.methods.formatNumber = function(number) {
+userProfileSchema.methods.formatNumber = function (number) {
   const format = this.budgetPreferences?.numberFormat || 'indian'
   const language = this.budgetPreferences?.language || 'hinglish'
-  
+
   let locale = 'en-IN'
   if (format === 'international') {
     locale = 'en-US'
   } else if (language === 'hindi' || language === 'hi') {
     locale = 'hi-IN'
   }
-  
+
   return new Intl.NumberFormat(locale).format(number || 0)
 }
 
 // Method to format date with user preferences
-userProfileSchema.methods.formatDate = function(date) {
+userProfileSchema.methods.formatDate = function (date) {
   const format = this.budgetPreferences?.dateFormat || 'DD/MM/YYYY'
   const language = this.budgetPreferences?.language || 'hinglish'
-  
+
   let locale = 'en-IN'
   if (language === 'hindi' || language === 'hi') {
     locale = 'hi-IN'
   } else if (language === 'english' || language === 'en') {
     locale = 'en-US'
   }
-  
+
   const dateObj = new Date(date)
-  
+
   if (format === 'MM/DD/YYYY') {
     return dateObj.toLocaleDateString('en-US')
   } else if (format === 'YYYY-MM-DD') {
@@ -711,14 +711,14 @@ userProfileSchema.methods.formatDate = function(date) {
 }
 
 // Method to get user's timezone
-userProfileSchema.methods.getTimezone = function() {
+userProfileSchema.methods.getTimezone = function () {
   return this.budgetPreferences?.timezone || 'Asia/Kolkata'
 }
 
 // Method to check notification preferences
-userProfileSchema.methods.shouldSendNotification = function(type) {
+userProfileSchema.methods.shouldSendNotification = function (type) {
   const prefs = this.budgetPreferences || {}
-  
+
   switch (type) {
     case 'email':
       return prefs.emailNotifications !== false

@@ -210,28 +210,19 @@ export default function Home() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-12">
-            {session ? (
-              <Link href="/dashboard">
+            <>
+              <Link href="/auth/signup">
                 <button className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
-                  {t('hero.cta.dashboard')}
+                  {t('hero.cta.start')}
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </Link>
-            ) : (
-              <>
-                <Link href="/auth/signup">
-                  <button className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
-                    {t('hero.cta.start')}
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </Link>
-                <Link href="/auth/signin">
-                  <button className="w-full sm:w-auto border border-slate-200 dark:border-slate-600 hover:border-slate-300 dark:hover:border-slate-500 text-slate-700 dark:text-white px-6 py-3 rounded-lg font-medium transition-colors">
-                    {t('nav.signin')}
-                  </button>
-                </Link>
-              </>
-            )}
+              <Link href="/auth/signin">
+                <button className="w-full sm:w-auto border border-slate-200 dark:border-slate-600 hover:border-slate-300 dark:hover:border-slate-500 text-slate-700 dark:text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                  {t('nav.signin')}
+                </button>
+              </Link>
+            </>
           </div>
 
           {/* Trust Indicators */}

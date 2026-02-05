@@ -186,7 +186,7 @@ export default function AchievementsModal({ isOpen, onClose }) {
             className={`
               px-3 py-1.5 rounded-full text-sm font-medium transition-colors whitespace-nowrap
               ${activeCategory === 'all'
-                ? 'bg-slate-800 text-white'
+                ? 'bg-emerald-600 text-white'
                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }
             `}

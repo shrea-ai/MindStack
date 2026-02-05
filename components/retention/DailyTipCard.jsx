@@ -12,7 +12,9 @@ import {
   RefreshCw,
   AlertTriangle,
   TrendingUp,
-  Award
+  Award,
+  ArrowRight,
+  Share2
 } from 'lucide-react'
 
 const categoryStyles = {
@@ -176,67 +178,83 @@ export default function DailyTipCard({ className = '' }) {
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 0.3 }}
       >
-        <Card className={`overflow-hidden border-l-4 ${style.border} ${style.bg} ${className}`}>
-          <CardContent className="p-4">
-            {/* Header */}
-            <div className="flex items-start justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <div className={`p-1.5 rounded-lg ${style.bg}`}>
-                  <IconComponent className={`w-4 h-4 ${style.iconColor}`} />
+        <Card className={`overflow-hidden group ${className}`}>
+          <CardContent className="p-0">
+            <div className="flex flex-col sm:flex-row">
+              {/* Left Side - Illustration/Image */}
+              <div className="relative sm:w-1/3 min-h-[140px] bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center p-6">
+                <div className="relative z-10 w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md shadow-sm border border-white/20 flex items-center justify-center transform rotate-3 transition-transform group-hover:rotate-6 duration-500">
+                  <span className="text-3xl">{tip.icon}</span>
                 </div>
-                <span className={`text-sm font-medium ${style.titleColor}`}>
-                  {tip.title || "Today's Insight"}
-                </span>
+
+                {/* Abstract Background Shapes */}
+                <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
+                  <div className="absolute top-[-20%] left-[-20%] w-32 h-32 bg-indigo-500/20 rounded-full blur-3xl opacity-60" />
+                  <div className="absolute bottom-[-10%] right-[-10%] w-24 h-24 bg-purple-500/20 rounded-full blur-2xl opacity-60" />
+                </div>
               </div>
-              <button
-                onClick={handleDismiss}
-                className="p-1 rounded-full hover:bg-white/50 transition-colors"
-                aria-label="Dismiss tip"
-              >
-                <X className="w-4 h-4 text-slate-400" />
-              </button>
-            </div>
 
-            {/* Tip Message */}
-            <p className="text-slate-700 text-sm leading-relaxed mb-4">
-              {tip.message}
-            </p>
-
-            {/* Feedback */}
-            <div className="flex items-center justify-between pt-3 border-t border-slate-200/60">
-              <div className="flex items-center gap-1">
-                {feedbackGiven ? (
-                  <span className="text-xs text-emerald-600 flex items-center gap-1">
-                    <TrendingUp className="w-3 h-3" />
-                    Thanks for your feedback!
+              {/* Right Side - Content */}
+              <div className="flex-1 p-5 flex flex-col justify-center">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                    {tip.category}
                   </span>
-                ) : (
-                  <>
-                    <span className="text-xs text-slate-500 mr-2">Was this helpful?</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-muted-foreground">Daily Tip</span>
+                    <button
+                      onClick={handleDismiss}
+                      className="p-1 rounded-full hover:bg-secondary transition-colors"
+                      aria-label="Dismiss tip"
+                    >
+                      <X className="w-4 h-4 text-muted-foreground" />
+                    </button>
+                  </div>
+                </div>
+
+                <h3 className="text-lg font-semibold text-foreground mb-2 leading-tight">
+                  {tip.title}
+                </h3>
+
+                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                  {tip.content}
+                </p>
+
+                <div className="flex items-center justify-between mt-auto">
+                  <div className="flex items-center gap-3">
+                    <Button
+                      onClick={() => handleFeedback('helpful')} // Placeholder action
+                      size="sm"
+                      className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-500/20"
+                    >
+                      {tip.actionLabel || 'Learn More'}
+                      <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+                    </Button>
+
+                    <button
+                      onClick={handleDismiss} // Placeholder share
+                      className="p-2 rounded-lg text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors"
+                    >
+                      <Share2 className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <div className="flex items-center gap-1">
                     <button
                       onClick={() => handleFeedback('helpful')}
-                      className="p-1.5 rounded-lg hover:bg-emerald-100 transition-colors group"
-                      aria-label="Mark as helpful"
+                      className="p-2 rounded-lg text-muted-foreground hover:bg-emerald-500/10 hover:text-emerald-500 transition-colors"
                     >
-                      <ThumbsUp className="w-4 h-4 text-slate-400 group-hover:text-emerald-600" />
+                      <ThumbsUp className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => handleFeedback('not_relevant')}
-                      className="p-1.5 rounded-lg hover:bg-red-100 transition-colors group"
-                      aria-label="Mark as not relevant"
+                      className="p-2 rounded-lg text-muted-foreground hover:bg-red-500/10 hover:text-red-500 transition-colors"
                     >
-                      <ThumbsDown className="w-4 h-4 text-slate-400 group-hover:text-red-500" />
+                      <ThumbsDown className="w-4 h-4" />
                     </button>
-                  </>
-                )}
+                  </div>
+                </div>
               </div>
-
-              <button
-                onClick={handleDismiss}
-                className="text-xs text-slate-400 hover:text-slate-600 transition-colors"
-              >
-                Hide tips
-              </button>
             </div>
           </CardContent>
         </Card>
