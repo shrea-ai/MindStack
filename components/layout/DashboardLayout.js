@@ -136,9 +136,9 @@ export default function DashboardLayout({ children, title = "Dashboard", onRefre
                     variant="ghost"
                     size="icon"
                     onClick={() => router.push('/dashboard/notifications')}
-                    className="relative h-10 w-10 rounded-xl hover:bg-slate-100 transition-colors active:scale-95"
+                    className="relative h-10 w-10 rounded-xl hover:bg-accent transition-colors active:scale-95"
                   >
-                    <Bell className="h-5 w-5 text-slate-600" />
+                    <Bell className="h-5 w-5 text-muted-foreground" />
                     {/* Optional: Add notification badge */}
                     {/* <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span> */}
                   </Button>
@@ -147,21 +147,21 @@ export default function DashboardLayout({ children, title = "Dashboard", onRefre
                   <div className="relative hidden lg:block" ref={dropdownRef}>
                     <Button
                       variant="ghost"
-                      className="flex items-center space-x-2 bg-slate-100/50 hover:bg-slate-200/50 rounded-xl px-3 py-2 h-10 transition-all duration-200 active:scale-95"
+                      className="flex items-center space-x-2 bg-secondary/50 hover:bg-secondary/80 rounded-xl px-3 py-2 h-10 transition-all duration-200 active:scale-95"
                       onClick={() => setShowProfileDropdown(!showProfileDropdown)}
                     >
-                      <Avatar className="h-7 w-7 sm:h-8 sm:w-8 ring-2 ring-emerald-100">
+                      <Avatar className="h-7 w-7 sm:h-8 sm:w-8 ring-2 ring-cyan-100 dark:ring-cyan-900">
                         <AvatarImage src={profileImage} />
-                        <AvatarFallback className="text-sm bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold">
+                        <AvatarFallback className="text-sm bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold">
                           {session?.user?.name?.[0] || 'A'}
                         </AvatarFallback>
                       </Avatar>
                       <div className="hidden sm:block text-left">
-                        <p className="text-sm font-semibold text-slate-700 truncate max-w-24 lg:max-w-none">
+                        <p className="text-sm font-semibold text-foreground truncate max-w-24 lg:max-w-none">
                           {session?.user?.name?.split(' ')[0] || 'User'}
                         </p>
                       </div>
-                      <ChevronDown className={`h-4 w-4 text-slate-500 transition-transform duration-200 ${showProfileDropdown ? 'rotate-180' : ''} hidden sm:block`} />
+                      <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${showProfileDropdown ? 'rotate-180' : ''} hidden sm:block`} />
                     </Button>
 
                     {/* Profile Dropdown Menu */}
@@ -172,22 +172,22 @@ export default function DashboardLayout({ children, title = "Dashboard", onRefre
                           animate={{ opacity: 1, scale: 1, y: 0 }}
                           exit={{ opacity: 0, scale: 0.95, y: -10 }}
                           transition={{ duration: 0.15 }}
-                          className="absolute right-0 mt-2 w-64 sm:w-72 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50"
+                          className="absolute right-0 mt-2 w-64 sm:w-72 bg-popover rounded-2xl shadow-xl border border-border py-2 z-50"
                         >
                           {/* User Info Header */}
-                          <div className="px-4 py-3 border-b border-slate-100">
+                          <div className="px-4 py-3 border-b border-border">
                             <div className="flex items-center space-x-3">
-                              <Avatar className="h-12 w-12 ring-2 ring-emerald-100">
+                              <Avatar className="h-12 w-12 ring-2 ring-cyan-100 dark:ring-cyan-900">
                                 <AvatarImage src={profileImage} />
-                                <AvatarFallback className="text-lg bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold">
+                                <AvatarFallback className="text-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-bold">
                                   {session?.user?.name?.[0] || 'A'}
                                 </AvatarFallback>
                               </Avatar>
                               <div className="flex-1 min-w-0">
-                                <p className="text-lg font-bold text-slate-900 truncate">
+                                <p className="text-lg font-bold text-foreground truncate">
                                   {session?.user?.name || 'User'}
                                 </p>
-                                <p className="text-sm text-slate-500 truncate">
+                                <p className="text-sm text-muted-foreground truncate">
                                   {session?.user?.email || 'user@example.com'}
                                 </p>
                               </div>
@@ -220,7 +220,7 @@ export default function DashboardLayout({ children, title = "Dashboard", onRefre
                                 router.push('/dashboard/help')
                               }}
                             />
-                            <div className="border-t border-slate-100 my-2"></div>
+                            <div className="border-t border-border my-2"></div>
                             <MenuItem
                               icon={LogOut}
                               label="Sign Out"
@@ -228,7 +228,7 @@ export default function DashboardLayout({ children, title = "Dashboard", onRefre
                                 setShowProfileDropdown(false)
                                 signOut({ callbackUrl: window.location.origin })
                               }}
-                              className="text-red-600 hover:bg-red-50"
+                              className="text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10"
                             />
                           </div>
                         </motion.div>
@@ -274,9 +274,9 @@ function MenuItem({ icon: Icon, label, onClick, className = "" }) {
   return (
     <button
       onClick={onClick}
-      className={`w-full flex items-center space-x-3 px-4 py-3 text-left text-slate-700 hover:bg-slate-50 active:bg-slate-100 transition-colors duration-150 ${className}`}
+      className={`w-full flex items-center space-x-3 px-4 py-3 text-left text-foreground hover:bg-accent active:bg-accent/80 transition-colors duration-150 ${className}`}
     >
-      <Icon className="h-5 w-5 text-slate-500" />
+      <Icon className="h-5 w-5 text-muted-foreground" />
       <span className="font-medium">{label}</span>
     </button>
   )

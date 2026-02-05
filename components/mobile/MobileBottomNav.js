@@ -88,13 +88,13 @@ export default function MobileBottomNav() {
 
       {/* Bottom Navigation Bar */}
       <motion.div
-        className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200 safe-area-bottom"
+        className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-t border-border safe-area-bottom"
         initial={{ y: 100 }}
         animate={{ y: 0 }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
       >
         {/* iOS Safe Area Bottom Padding */}
-        <div className="bg-white pb-safe">
+        <div className="bg-background/80 backdrop-blur-lg pb-safe">
           <nav className="flex items-center justify-around h-16 px-2 relative">
             {NAV_ITEMS.map((item, index) => {
               const Icon = item.icon
@@ -113,7 +113,7 @@ export default function MobileBottomNav() {
                   {active && !isProfileIcon && (
                     <motion.div
                       layoutId="activeTab"
-                      className="absolute inset-0 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl"
+                      className="absolute inset-0 bg-secondary/50 rounded-xl"
                       initial={false}
                       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                     />
@@ -131,8 +131,8 @@ export default function MobileBottomNav() {
                       {isProfileIcon ? (
                         // Profile Avatar with Image
                         <div className={`relative w-9 h-9 rounded-full ${active
-                          ? 'ring-2 ring-emerald-400 ring-offset-2'
-                          : 'ring-2 ring-slate-300'
+                          ? 'ring-2 ring-cyan-400 ring-offset-2 ring-offset-background'
+                          : 'ring-2 ring-muted'
                           } overflow-hidden shadow-md`}>
                           {profileImage ? (
                             <Image
@@ -145,9 +145,9 @@ export default function MobileBottomNav() {
                             />
                           ) : (
                             <div className={`w-full h-full ${active
-                              ? 'bg-gradient-to-r from-emerald-500 to-teal-500'
-                              : 'bg-gradient-to-r from-slate-400 to-slate-500'
-                              } flex items-center justify-center text-white font-semibold text-sm`}>
+                              ? 'bg-gradient-to-r from-cyan-500 to-blue-500'
+                              : 'bg-muted'
+                              } flex items-center justify-center text-primary-foreground font-semibold text-sm`}>
                               {session?.user?.name?.charAt(0).toUpperCase() || 'U'}
                             </div>
                           )}
@@ -157,7 +157,7 @@ export default function MobileBottomNav() {
                           <Icon className="w-5 h-5 text-white" strokeWidth={2.5} />
                         </div>
                       ) : (
-                        <Icon className="w-6 h-6 text-slate-400" strokeWidth={2} />
+                        <Icon className="w-6 h-6 text-muted-foreground" strokeWidth={2} />
                       )}
                     </motion.div>
                   </div>
@@ -166,8 +166,8 @@ export default function MobileBottomNav() {
                   {!isProfileIcon && (
                     <motion.span
                       className={`text-xs font-medium mt-1 relative z-10 ${active
-                        ? 'text-transparent bg-gradient-to-r bg-clip-text from-emerald-600 to-teal-600'
-                        : 'text-slate-500'
+                        ? 'text-cyan-500 dark:text-cyan-400'
+                        : 'text-muted-foreground'
                         }`}
                       animate={{
                         scale: active ? 1.05 : 1,
@@ -182,8 +182,8 @@ export default function MobileBottomNav() {
                   {isProfileIcon && (
                     <motion.span
                       className={`text-[10px] font-medium mt-0.5 relative z-10 ${active
-                        ? 'text-emerald-600'
-                        : 'text-slate-500'
+                        ? 'text-cyan-500 dark:text-cyan-400'
+                        : 'text-muted-foreground'
                         }`}
                     >
                       {item.name}
@@ -193,7 +193,7 @@ export default function MobileBottomNav() {
                   {/* Active Dot Indicator */}
                   {active && !isProfileIcon && (
                     <motion.div
-                      className="absolute bottom-0 w-1 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full"
+                      className="absolute bottom-0 w-1 h-1 bg-cyan-500 rounded-full"
                       layoutId="activeDot"
                       initial={false}
                       transition={{ type: 'spring', stiffness: 300, damping: 30 }}

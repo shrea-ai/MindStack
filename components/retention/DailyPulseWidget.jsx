@@ -131,7 +131,7 @@ export default function DailyPulseWidget({ onQuickAdd, className = '' }) {
 
   if (loading) {
     return (
-      <Card className={`border-l-4 border-l-emerald-500 ${className}`}>
+      <Card className={`border-l-4 border-l-emerald-500 bg-card ${className}`}>
         <CardContent className="p-4">
           <div className="animate-pulse">
             <div className="flex justify-between mb-4">

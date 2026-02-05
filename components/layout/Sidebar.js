@@ -92,9 +92,9 @@ export default function Sidebar({ isOpen, onClose }) {
           />
 
           {/* Sidebar panel - Full height, slides from left */}
-          <div className="relative w-80 max-w-[85vw] h-full bg-white dark:bg-gray-900 shadow-2xl animate-in slide-in-from-left duration-300">
+          <div className="relative w-80 max-w-[85vw] h-full bg-background shadow-2xl animate-in slide-in-from-left duration-300">
             {/* Header with close button */}
-            <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-900 h-16">
+            <div className="flex items-center justify-between p-4 border-b border-border bg-sidebar h-16">
               <Logo size="medium" textClassName="text-lg" />
 
               <div className="flex items-center gap-2">
@@ -104,7 +104,7 @@ export default function Sidebar({ isOpen, onClose }) {
                   variant="ghost"
                   size="sm"
                   onClick={onClose}
-                  className="text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800 rounded-lg w-8 h-8 p-0"
+                  className="text-muted-foreground hover:text-foreground hover:bg-secondary rounded-lg w-8 h-8 p-0"
                 >
                   <X className="h-5 w-5" />
                 </Button>
