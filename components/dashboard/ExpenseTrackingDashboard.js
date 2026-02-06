@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
-import { 
+import {
   BarChart,
   Bar,
   XAxis,
@@ -17,10 +17,10 @@ import {
   Pie,
   Cell
 } from 'recharts'
-import { 
-  TrendingUp, 
+import {
+  TrendingUp,
   TrendingDown,
-  DollarSign, 
+  DollarSign,
   Calendar,
   AlertTriangle,
   CheckCircle,
@@ -38,7 +38,7 @@ const CATEGORY_COLORS = {
   'food': '#FF6B6B',
   'food & dining': '#FF6B6B',
   // Home / Utilities
-  'घर का खर्च': '#4ECDC4', 
+  'घर का खर्च': '#4ECDC4',
   'Home': '#4ECDC4',
   'Home & Utilities': '#4ECDC4',
   'Utilities': '#4ECDC4',
@@ -86,7 +86,7 @@ export default function ExpenseTrackingDashboard({ budget, refreshTrigger }) {
       try {
         const response = await fetch(`/api/expenses?month=${currentMonth}&limit=20`)
         const data = await response.json()
-        
+
         if (data.success) {
           setExpenses(data.expenses)
           setCategorySpending(data.categoryTotals || {})
@@ -124,7 +124,7 @@ export default function ExpenseTrackingDashboard({ budget, refreshTrigger }) {
       const budget_amount = category.amount
       const percentage_used = budget_amount > 0 ? (spent / budget_amount) * 100 : 0
       const remaining = budget_amount - spent
-      
+
       return {
         key,
         category: category.englishName,
@@ -205,7 +205,7 @@ export default function ExpenseTrackingDashboard({ budget, refreshTrigger }) {
             <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 border">
               <div className="relative w-12 h-12">
                 <div className="absolute inset-0 rounded-full" style={{
-                  background: `conic-gradient(${budgetUtilization > 100 ? '#dc2626' : '#0ea5e9'} ${Math.min(budgetUtilization,100)}%, #e2e8f0 ${Math.min(budgetUtilization,100)}%)`
+                  background: `conic-gradient(${budgetUtilization > 100 ? '#dc2626' : '#0ea5e9'} ${Math.min(budgetUtilization, 100)}%, #e2e8f0 ${Math.min(budgetUtilization, 100)}%)`
                 }}></div>
                 <div className="absolute inset-[6px] bg-white rounded-full flex items-center justify-center text-xs font-semibold text-slate-700">
                   {budgetUtilization.toFixed(0)}%
@@ -214,7 +214,7 @@ export default function ExpenseTrackingDashboard({ budget, refreshTrigger }) {
               <div>
                 <p className="text-xs uppercase tracking-wide text-slate-500">Progress</p>
                 <div className="w-28 h-2 bg-slate-200 rounded-full overflow-hidden mt-1">
-                  <div className={`h-2 ${budgetUtilization>100?'bg-red-500':budgetUtilization>80?'bg-amber-500':'bg-emerald-500'}`} style={{width:`${Math.min(budgetUtilization,100)}%`}}></div>
+                  <div className={`h-2 ${budgetUtilization > 100 ? 'bg-red-500' : budgetUtilization > 80 ? 'bg-amber-500' : 'bg-emerald-500'}`} style={{ width: `${Math.min(budgetUtilization, 100)}%` }}></div>
                 </div>
                 <p className="text-[11px] text-slate-500 mt-1">Monthly</p>
               </div>
@@ -256,7 +256,7 @@ export default function ExpenseTrackingDashboard({ budget, refreshTrigger }) {
                 <div key={item.key} className="relative group p-4 rounded-xl border border-gray-200 bg-gradient-to-br from-white to-gray-50 hover:shadow-md transition-all">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-xl" style={{background: color + '20'}}>
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-xl" style={{ background: color + '20' }}>
                         {item.emoji}
                       </div>
                       <div>
@@ -326,8 +326,8 @@ export default function ExpenseTrackingDashboard({ budget, refreshTrigger }) {
               {expenses.map((expense) => (
                 <div key={expense.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors group">
                   <div className="flex items-center space-x-3">
-                    <div className={`w-3 h-3 rounded-full`} style={{ 
-                      backgroundColor: CATEGORY_COLORS[expense.category] || '#95A5A6' 
+                    <div className={`w-3 h-3 rounded-full`} style={{
+                      backgroundColor: CATEGORY_COLORS[expense.category] || '#95A5A6'
                     }}></div>
                     <div>
                       <p className="font-medium text-gray-900 flex items-center gap-2">
@@ -340,7 +340,7 @@ export default function ExpenseTrackingDashboard({ budget, refreshTrigger }) {
                               if (data.success) {
                                 setExpenses(prev => prev.filter(e => e.id !== expense.id))
                                 // Recompute category spending after delete
-                                const updatedCategoryTotals = {...categorySpending}
+                                const updatedCategoryTotals = { ...categorySpending }
                                 const cat = expense.category
                                 if (typeof updatedCategoryTotals[cat] === 'number') {
                                   updatedCategoryTotals[cat] -= expense.amount
@@ -372,11 +372,15 @@ export default function ExpenseTrackingDashboard({ budget, refreshTrigger }) {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-semibold text-gray-900">
-                      ₹{expense.amount.toLocaleString('en-IN')}
+                    <p className={`font-semibold ${expense.type === 'credit' ? 'text-green-600' : 'text-red-600'
+                      }`}>
+                      {expense.type === 'credit' ? '+' : '-'}₹{expense.amount.toLocaleString('en-IN')}
                     </p>
                     {expense.merchant && (
                       <p className="text-xs text-gray-500">{expense.merchant}</p>
+                    )}
+                    {expense.type === 'credit' && (
+                      <p className="text-xs text-green-600 font-medium">Income</p>
                     )}
                   </div>
                 </div>
@@ -403,13 +407,13 @@ export default function ExpenseTrackingDashboard({ budget, refreshTrigger }) {
                   <div key={item.key} className="p-3 bg-yellow-50 rounded-lg">
                     <p className="font-medium text-yellow-800">
                       {item.emoji} {item.hinglishName}: {
-                        item.status === 'over' 
+                        item.status === 'over'
                           ? `₹${(item.spent - item.budgeted).toLocaleString('en-IN')} over budget!`
                           : `Approaching budget limit (${item.percentageUsed.toFixed(0)}%)`
                       }
                     </p>
                     <p className="text-sm text-yellow-700 mt-1">
-                      {item.status === 'over' 
+                      {item.status === 'over'
                         ? 'Consider reducing expenses in this category'
                         : 'Monitor spending carefully for the rest of the month'
                       }

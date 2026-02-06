@@ -189,6 +189,7 @@ export async function POST(request) {
       merchant: expenseData.merchant || null,
       date: expenseData.date || new Date().toISOString().split('T')[0],
       timestamp: new Date(),
+      type: expenseData.type || 'debit', // 'credit' or 'debit'
       entryMethod: expenseData.entryMethod || 'manual', // 'voice' or 'manual'
       originalText: expenseData.originalText || null, // For voice entries
       confidence: expenseData.confidence || null // For voice entries
@@ -236,8 +237,8 @@ export async function POST(request) {
 
           const categoryBudget = categoriesArray.find(
             cat => cat?.name === unifiedCategory ||
-                   cat?.category === unifiedCategory ||
-                   cat?.englishName === unifiedCategory
+              cat?.category === unifiedCategory ||
+              cat?.englishName === unifiedCategory
           )
           if (categoryBudget) {
             categoryBudgetAmount = categoryBudget.amount

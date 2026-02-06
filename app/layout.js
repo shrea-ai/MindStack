@@ -194,7 +194,7 @@ export default function RootLayout({ children }) {
         <PWARegister />
         <ClientProviders>
           {children}
-          <PWAInstallPrompt />
+          {/* <PWAInstallPrompt /> */}
           {/* <VAPIVoiceAgent position="bottom-right" showTranscript={true} /> */}
         </ClientProviders>
       </body>
